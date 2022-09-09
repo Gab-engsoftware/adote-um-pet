@@ -4,6 +4,7 @@ import com.gabriel.dtos.PetDto;
 import com.gabriel.models.Pet;
 import com.gabriel.services.PetService;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +16,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/pet")
 @CrossOrigin(origins = "*", maxAge = 3600)
+@RequestMapping("/pet")
 @AllArgsConstructor
 public class PetController {
 
@@ -41,7 +42,33 @@ public class PetController {
     @GetMapping("/{id}")
     public ResponseEntity<Object> getOnePet(@PathVariable(value = "id") UUID id){
         Optional<Pet> petOptional = petService.findById(id);
-        return petOptional.<ResponseEntity<Object>>map(pet -> ResponseEntity.status(HttpStatus.OK).body(pet)).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pet not found."));
+        if (!petOptional.isPresent()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pet not found.");
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(petOptional.get());
+    }
+    
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Object> deletePet(@PathVariable(value = "id") UUID id){
+        Optional<Pet> petOptional = petService.findById(id);
+        if (!petOptional.isPresent()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pet not found.");
+        }
+        petService.delete(petOptional.get());
+        return ResponseEntity.status(HttpStatus.OK).body("Pet deleted Sucessfully");
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updatePet(@PathVariable(value = "id") UUID id,
+                                            @RequestBody @Valid PetDto petDto){
+        Optional<Pet> petOptional = petService.findById(id);
+        if(!petOptional.isPresent()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pet not found.");
+        }
+        var pet = new Pet();
+        BeanUtils.copyProperties(petDto, pet);
+        pet.setId(petOptional.get().getId());
+        return ResponseEntity.status(HttpStatus.OK).body(petService.save(pet));
     }
 
 }

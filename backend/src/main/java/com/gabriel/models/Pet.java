@@ -1,7 +1,6 @@
 package com.gabriel.models;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -9,15 +8,15 @@ import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
-@Table(name = "pets")
-@Data
+@Table(name = "Pets")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Pet implements Serializable {
-    private static final Long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(columnDefinition = "uuid")
     private UUID id;
 
     @Column(nullable = false, length = 50)
@@ -34,4 +33,53 @@ public class Pet implements Serializable {
 
     @Column(nullable = false, length = 50)
     private String petOwnerName;
+
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getBreed() {
+        return breed;
+    }
+
+    public void setBreed(String breed) {
+        this.breed = breed;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Boolean getVaccinated() {
+        return vaccinated;
+    }
+
+    public void setVaccinated(Boolean vaccinated) {
+        this.vaccinated = vaccinated;
+    }
+
+    public String getPetOwnerName() {
+        return petOwnerName;
+    }
+
+    public void setPetOwnerName(String petOwnerName) {
+        this.petOwnerName = petOwnerName;
+    }
 }

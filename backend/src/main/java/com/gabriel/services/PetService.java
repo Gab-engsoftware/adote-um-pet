@@ -33,4 +33,10 @@ public class PetService {
     public Optional<Pet> findById(UUID id) {
         return petRepository.findById(id);
     }
+
+    @Transactional
+    public void delete(Pet pet) {
+       petRepository.delete(pet);
+    }
+
 }
