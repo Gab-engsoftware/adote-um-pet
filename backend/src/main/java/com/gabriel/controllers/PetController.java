@@ -2,6 +2,8 @@ package com.gabriel.controllers;
 
 import com.gabriel.dtos.PetDto;
 import com.gabriel.models.Pet;
+import com.gabriel.models.PetBuilderImpl;
+import com.gabriel.models.PetShop;
 import com.gabriel.services.PetService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -28,9 +30,12 @@ public class PetController {
         if(petService.existsByNameAndPetOwnerName(petDto.getName(), petDto.getPetOwnerName())){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: Pet already registered for this name/petOwnerName");
         }
-
-        var petModel = new Pet();
-        BeanUtils.copyProperties(petDto, petModel);
+        
+        //Realizando a criação do pet via builder
+        PetBuilder petBuilder = new PetBuilderImpl();    
+        BeanUtils.copyProperties(petDto, petBuilder);
+        PetShop petshop = new PetShop(petBuilder);  
+        Pet petModel = petshop.definirPet();
         return ResponseEntity.status(HttpStatus.CREATED).body(petService.save(petModel));
     }
 
@@ -65,8 +70,12 @@ public class PetController {
         if(!petOptional.isPresent()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pet not found.");
         }
-        var pet = new Pet();
-        BeanUtils.copyProperties(petDto, pet);
+        
+        //Realizando a criação do pet via builder
+        PetBuilder petBuilder = new PetBuilderImpl();    
+        BeanUtils.copyProperties(petDto, petBuilder);
+        PetShop petshop = new PetShop(petBuilder);  
+        Pet pet = petshop.definirPet();
         pet.setId(petOptional.get().getId());
         return ResponseEntity.status(HttpStatus.OK).body(petService.save(pet));
     }

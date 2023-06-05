@@ -13,7 +13,9 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Pet implements Serializable {
     private static final long serialVersionUID = 1L;
-
+//Classe Product
+    
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(columnDefinition = "uuid")
