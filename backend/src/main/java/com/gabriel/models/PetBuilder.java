@@ -4,7 +4,7 @@ import java.util.UUID;
 
 //Interface Builder: Faz o papel de interface e diz o que tem que ser implementado para construir o objeto.
 
-interface PetBuilder {
+public interface PetBuilder {
 	void setId(UUID id);
 	void setName(String Name);
 	void setBreed(String breed);

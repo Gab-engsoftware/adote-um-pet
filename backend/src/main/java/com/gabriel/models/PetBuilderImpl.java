@@ -3,7 +3,7 @@ package com.gabriel.models;
 import java.util.UUID;
 
 //ConcreteBuilder: Implementa a interface Builder e constrói partes do objeto
-class PetBuilderImpl implements PetBuilder {
+public class PetBuilderImpl implements PetBuilder {
 
 	private Pet pet;
 	

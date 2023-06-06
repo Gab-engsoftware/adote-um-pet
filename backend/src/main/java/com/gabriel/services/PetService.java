@@ -13,9 +13,14 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class PetService {
+public class PetService implements IPetService {
+// Agora a classe Pet service Implementa a interface IPetService do padrão decorator;
+    PetRepository petRepository;
+    private LoggingPetServiceDecorator petService;
 
-    final PetRepository petRepository;
+    public PetService() {
+
+    }
 
     @Transactional
     public Pet save(Pet petModel){
@@ -37,6 +42,11 @@ public class PetService {
     @Transactional
     public void delete(Pet pet) {
        petRepository.delete(pet);
+    }
+
+    public void PetController(LoggingPetServiceDecorator petService) {
+        this.petService = petService;
+        petService.setDecoratedService(new PetService());
     }
 
 }

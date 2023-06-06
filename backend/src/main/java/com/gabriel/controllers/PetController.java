@@ -2,11 +2,15 @@ package com.gabriel.controllers;
 
 import com.gabriel.dtos.PetDto;
 import com.gabriel.models.Pet;
+import com.gabriel.models.PetBuilder;
 import com.gabriel.models.PetBuilderImpl;
 import com.gabriel.models.PetShop;
+import com.gabriel.repositories.PetRepository;
+import com.gabriel.services.LoggingPetServiceDecorator;
 import com.gabriel.services.PetService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +27,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class PetController {
 
-    final PetService petService;
+    final LoggingPetServiceDecorator petService;
 
     @PostMapping
     public ResponseEntity<Object> save(@RequestBody @Valid PetDto petDto){
@@ -32,7 +36,7 @@ public class PetController {
         }
         
         //Realizando a criação do pet via builder
-        PetBuilder petBuilder = new PetBuilderImpl();    
+        PetBuilder petBuilder = new PetBuilderImpl();
         BeanUtils.copyProperties(petDto, petBuilder);
         PetShop petshop = new PetShop(petBuilder);  
         Pet petModel = petshop.definirPet();

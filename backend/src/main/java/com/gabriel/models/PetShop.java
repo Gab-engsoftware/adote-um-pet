@@ -1,7 +1,7 @@
 package com.gabriel.models;
 
 //Director: Comanda o processo de construção usando o builder
-class PetShop {
+public class PetShop {
 	private PetBuilder petBuilder;
 	
 	public PetShop(PetBuilder petBuilder) {
