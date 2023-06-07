@@ -14,39 +14,39 @@ import java.util.UUID;
 @Service
 @AllArgsConstructor
 public class PetService implements IPetService {
-// Agora a classe Pet service Implementa a interface IPetService do padrão decorator;
-    PetRepository petRepository;
-    private LoggingPetServiceDecorator petService;
+	// Agora a classe Pet service Implementa a interface IPetService do padrão decorator;
+	PetRepository petRepository;
+	private LoggingPetServiceDecorator petService;
 
-    public PetService() {
+	public PetService() {
+	}
+	
 
-    }
+@Transactional
+public Pet save(Pet petModel){
+	return petRepository.save(petModel);
+}
 
-    @Transactional
-    public Pet save(Pet petModel){
-        return petRepository.save(petModel);
-    }
+public boolean existsByNameAndPetOwnerName(String name, String petOwnerName){
+	return petRepository.existsByNameAndPetOwnerName(name, petOwnerName);
+}
 
-   public boolean existsByNameAndPetOwnerName(String name, String petOwnerName){
-        return petRepository.existsByNameAndPetOwnerName(name, petOwnerName);
-   }
+public List<Pet> findAll() {
+	return petRepository.findAll();
+}
 
-    public List<Pet> findAll() {
-        return petRepository.findAll();
-    }
+public Optional<Pet> findById(UUID id) {
+	return petRepository.findById(id);
+}
 
-    public Optional<Pet> findById(UUID id) {
-        return petRepository.findById(id);
-    }
+@Transactional
+public void delete(Pet pet) {
+	petRepository.delete(pet);
+}
 
-    @Transactional
-    public void delete(Pet pet) {
-       petRepository.delete(pet);
-    }
-
-    public void PetController(LoggingPetServiceDecorator petService) {
-        this.petService = petService;
-        petService.setDecoratedService(new PetService());
-    }
+public void PetController(LoggingPetServiceDecorator petService) {
+	this.petService = petService;
+	petService.setDecoratedService(new PetService());
+}
 
 }

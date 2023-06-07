@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+
+import com.gabriel.visitor.PetVisitor;
+
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -35,8 +38,11 @@ public class Pet implements Serializable {
 
     @Column(nullable = false, length = 50)
     private String petOwnerName;
-
-
+    
+    //permite que um objeto Pet seja visitado por um visitante, que executará operações no objeto visitado
+    public void accept(PetVisitor visitor) {
+        visitor.visit(this);
+    }
     public UUID getId() {
         return id;
     }
